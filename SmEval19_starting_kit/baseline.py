@@ -32,7 +32,7 @@ NUM_EPOCHS = None                  # Number of epochs to train a model for
 
 
 label2emotion = {0:"OK", 1:"HS"}
-emotion2label = {"0":0, "1":1}
+emotion2label = {"0":0, "1":1, "2":2, "3":3}
 
 
 def preprocessData(dataFilePath, mode):
@@ -72,6 +72,7 @@ def preprocessData(dataFilePath, mode):
                 # Train data contains id, 3 turns and label
                 label = emotion2label[line[2]]
                 labels.append(label)
+                
 
             # this is correct            
             conv = ' <eos> '.join(line[1:4])
@@ -168,6 +169,7 @@ def writeNormalisedData(dataFilePath, texts):
                 fout.write(line[1] + '\t' + normalisedLine[0] + '\t')
                 fout.write(line[2] + '\t' + normalisedLine[1] + '\t')
                 fout.write(line[3] + '\t' + normalisedLine[2] + '\t')
+                fout.write(line[4] + '\t' + normalisedLine[3] + '\t')
                 try:
                     # If label information available (train time)
                     fout.write(line[4] + '\n')    
@@ -285,6 +287,7 @@ def main():
         
     # Randomize data
     np.random.shuffle(trainIndices)
+    print(trainIndices)
     data = data[trainIndices]
     labels = labels[trainIndices]
       
@@ -308,7 +311,6 @@ def main():
         yVal = labels[index1:index2]
         print("Building model...")
         model = buildModel(embeddingMatrix)
-        print("A")
         model.fit(xTrain, yTrain, 
                   validation_data=(xVal, yVal),
                   epochs=NUM_EPOCHS, batch_size=BATCH_SIZE)
@@ -340,7 +342,7 @@ def main():
     predictions = predictions.argmax(axis=1)
 
     with io.open(solutionPath, "w", encoding="utf8") as fout:
-        fout.write('\t'.join(["id", "turn1", "turn2", "turn3", "label"]) + '\n')        
+        fout.write('\t'.join(["id", "text", "label"]) + '\n')        
         with io.open(testDataPath, encoding="utf8") as fin:
             fin.readline()
             for lineNum, line in enumerate(fin):
