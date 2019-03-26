@@ -48,7 +48,7 @@ def preprocessData(dataFilePath, mode):
     indices = []
     conversations = []
     labels = []
-    with io.open(dataFilePath, encoding="utf8") as finput:
+    with io.open(dataFilePath, encoding="utf8", errors='ignore') as finput:
         finput.readline()
         for line in finput:
             # Convert multiple instances of . ? ! , to single instance

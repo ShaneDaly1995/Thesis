@@ -56,7 +56,8 @@ def preprocessData(dataFilePath, mode):
     indices = []
     conversations = []
     labels = []
-    with io.open(dataFilePath, encoding="utf8") as finput:
+    print("Reading File")
+    with io.open(dataFilePath, encoding="utf8", errors='ignore') as finput:
         finput.readline()
         for line in finput:
             # Convert multiple instances of . ? ! , to single instance
@@ -92,7 +93,7 @@ def preprocessData(dataFilePath, mode):
             # indeces is correct
             indices.append(int(line[0])-1)
             conversations.append(conv.lower())
-    
+    print("Return Statements")
     if mode == "train":
         return indices, conversations, labels
     else:
