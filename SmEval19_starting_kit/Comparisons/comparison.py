@@ -6,15 +6,24 @@ Created on Tue Mar 26 11:34:33 2019
 @author: shanedaly
 """
 
-goldStandard = ""
-outputFile = ""
+import numpy as np
+import pandas as pd
+
+goldStandard = "gold_standard.tsv"
+outputFile = "results.txt"
 
 gold = []
 output = []
 
-def read():
+def read_csv(filename):
     # read in file
-    pass
+    data = pd.read_csv(filename, delimiter="\t")
+    standard = data.values
+    return standard
+
+def read(filename):
+    results = np.loadtxt(filename)
+    return results
 
 def compare_hs(gold, output):
     
@@ -37,3 +46,7 @@ def compare_tg():
 
 def compare_ag():
     pass
+
+
+gold_data = read_csv(goldStandard)
+output_data = read(outputFile)
