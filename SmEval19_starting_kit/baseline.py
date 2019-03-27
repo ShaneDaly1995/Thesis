@@ -287,7 +287,6 @@ def main():
         
     # Randomize data
     np.random.shuffle(trainIndices)
-    print(trainIndices)
     data = data[trainIndices]
     labels = labels[trainIndices]
       
